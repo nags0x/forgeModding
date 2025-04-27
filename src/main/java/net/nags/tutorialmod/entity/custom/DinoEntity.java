@@ -1,6 +1,9 @@
 package net.nags.tutorialmod.entity.custom;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
@@ -69,5 +72,24 @@ public class DinoEntity extends Animal{
         if(this.level().isClientSide()){
             this.setupAnimationStates();
         }
+    }
+
+    //sounds not moans :)
+
+
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.ELDER_GUARDIAN_CURSE;
+    }
+
+
+    @Override
+    protected @Nullable SoundEvent getHurtSound(DamageSource pDamageSource) {
+        return SoundEvents.ENDER_DRAGON_AMBIENT;
+    }
+
+    @Override
+    protected @Nullable SoundEvent getDeathSound() {
+        return SoundEvents.IRON_GOLEM_DEATH;
     }
 }

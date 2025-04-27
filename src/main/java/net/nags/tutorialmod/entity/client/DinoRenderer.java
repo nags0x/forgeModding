@@ -17,7 +17,7 @@ public  class DinoRenderer extends MobRenderer<DinoEntity, DinoModel<DinoEntity>
 
     @Override
     public ResourceLocation getTextureLocation(DinoEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID,  "textures/entity/dino/dino_grey.png");
+        return ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID, "textures/entity/dino/dino_grey.png");
     }
 
     @Override

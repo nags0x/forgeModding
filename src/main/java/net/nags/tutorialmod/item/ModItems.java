@@ -18,11 +18,6 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, TutorialMod.MOD_ID);
 
-
-
-    public static final RegistryObject<Item> TRICERATOPS_SPAWN_EGG = ITEMS.register("triceratops_spawn_egg",
-            () -> new ForgeSpawnEggItem(ModEntities.DINO, 0x53524b, 0xdac741, new Item.Properties()));
-
     public static final RegistryObject<Item> DINO_SPAWN_EGG = ITEMS.register("dino_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.DINO, 0x53524b, 0xdac741, new Item.Properties()));
 
