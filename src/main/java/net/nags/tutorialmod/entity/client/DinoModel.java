@@ -18,7 +18,7 @@ public class DinoModel<T extends DinoEntity> extends HierarchicalModel<T> {
     private final ModelPart body;
     private final ModelPart head;
 
-    public TriceratopsModel(ModelPart root) {
+    public DinoModel(ModelPart root) {
         this.body = root.getChild("body");
         this.head = body.getChild("upper").getChild("neck").getChild("head");
     }
@@ -157,11 +157,11 @@ public class DinoModel<T extends DinoEntity> extends HierarchicalModel<T> {
 
     @Override
     public void setupAnim(DinoEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
+        this.root().getAllParts().forEach(ModelPart::resetPose); //so that animations don't go out of control
         this.applyHeadRotation(netHeadYaw, headPitch);
 
-        this.animateWalk(DinoAnimations.ANIM_TRICERATOPS_WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
-        this.animate(entity.idleAnimationState, DinoAnimations.ANIM_TRICERATOPS_IDLE, ageInTicks, 1f);
+        this.animateWalk(DinoAnimations.ANIM_DINO_WALKING, limbSwing, limbSwingAmount, 2f, 2.5f);
+        this.animate(entity.idleAnimationState, DinoAnimations.ANIM_DINO_IDLE, ageInTicks, 1f);
     }
 
     private void applyHeadRotation(float pNetHeadYaw, float pHeadPitch) {
@@ -173,8 +173,8 @@ public class DinoModel<T extends DinoEntity> extends HierarchicalModel<T> {
     }
 
     @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int color) {
-        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, color);
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, int colour) {
+        body.render(poseStack, vertexConsumer, packedLight, packedOverlay, colour);
     }
 
     @Override
