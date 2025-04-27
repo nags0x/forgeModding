@@ -664,4 +664,3 @@ public class DinoAnimations {
                                     AnimationChannel.Interpolations.LINEAR))).build();
 }
 
-}

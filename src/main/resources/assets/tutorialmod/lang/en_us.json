@@ -1,0 +1,104 @@
+{
+  "item.tutorialmod.alexandrite": "Alexandrite Gem",
+  "item.tutorialmod.raw_alexandrite": "Raw Alexandrite",
+
+  "item.tutorialmod.chisel": "Chisel",
+  "item.tutorialmod.kohlrabi": "Kohlrabi",
+  "item.tutorialmod.aurora_ashes": "Aurora Ashes",
+
+  "item.tutorialmod.alexandrite_sword": "Alexandrite Sword",
+  "item.tutorialmod.alexandrite_pickaxe": "Alexandrite Pickaxe",
+  "item.tutorialmod.alexandrite_shovel": "Alexandrite Shovel",
+  "item.tutorialmod.alexandrite_axe": "Alexandrite Axe",
+  "item.tutorialmod.alexandrite_hoe": "Alexandrite Hoe",
+
+  "item.tutorialmod.alexandrite_hammer": "Alexandrite Hammer",
+
+  "item.tutorialmod.alexandrite_helmet": "Alexandrite Helmet",
+  "item.tutorialmod.alexandrite_chestplate": "Alexandrite Chestplate",
+  "item.tutorialmod.alexandrite_leggings": "Alexandrite Leggings",
+  "item.tutorialmod.alexandrite_boots": "Alexandrite Boots",
+
+  "item.tutorialmod.alexandrite_horse_armor": "Alexandrite Horse Armor",
+  "item.tutorialmod.kaupen_armor_trim_smithing_template": "Kaupen Trim Template",
+
+  "item.tutorialmod.kaupen_bow": "Kaupen Bow",
+
+  "item.tutorialmod.bar_brawl_music_disc": "Bar Brawl Music Disc",
+  "item.tutorialmod.bar_brawl_music_disc.desc": "Bryan Tech - Bar Brawl (CC0)",
+
+  "item.minecraft.potion.effect.slimey_potion": "Slimey Potion",
+  "item.minecraft.splash_potion.effect.slimey_potion": "Slimey Splash Potion",
+  "item.minecraft.lingering_potion.effect.slimey_potion": "Slimey Lingering Potion",
+
+  "item.tutorialmod.kohlrabi_seeds": "Kohlrabi Seeds",
+  "item.tutorialmod.honey_berries": "Honey Berries",
+
+  "item.tutorialmod.triceratops_spawn_egg": "Triceratops Spawn Egg",
+
+
+  "block.tutorialmod.alexandrite_block": "Block of Alexandrite",
+  "block.tutorialmod.raw_alexandrite_block": "Block of Raw Alexandrite",
+  "block.tutorialmod.alexandrite_ore": "Alexandrite Ore",
+  "block.tutorialmod.alexandrite_deepslate_ore": "Alexandrite Deepslate Ore",
+
+  "block.tutorialmod.alexandrite_end_ore": "Alexandrite End Ore",
+  "block.tutorialmod.alexandrite_nether_ore": "Alexandrite Nether Ore",
+
+  "block.tutorialmod.walnut_log": "Walnut Log",
+  "block.tutorialmod.walnut_planks": "Walnut Planks",
+  "block.tutorialmod.walnut_wood": "Walnut Wood",
+  "block.tutorialmod.stripped_walnut_log": "Stripped Walnut Log",
+  "block.tutorialmod.stripped_walnut_wood": "Stripped Walnut Wood",
+  "block.tutorialmod.walnut_leaves": "Walnut Leaves",
+
+  "block.tutorialmod.walnut_sapling": "Walnut Sapling",
+
+
+  "block.tutorialmod.magic_block": "Magic Block",
+
+  "block.tutorialmod.alexandrite_stairs": "Alexandrite Stairs",
+  "block.tutorialmod.alexandrite_slab": "Alexandrite Slab",
+
+  "block.tutorialmod.alexandrite_button": "Alexandrite Button",
+  "block.tutorialmod.alexandrite_pressure_plate": "Alexandrite Pressure Plate",
+
+  "block.tutorialmod.alexandrite_fence": "Alexandrite Fence",
+  "block.tutorialmod.alexandrite_fence_gate": "Alexandrite Fence Gate",
+  "block.tutorialmod.alexandrite_wall": "Alexandrite Wall",
+
+  "block.tutorialmod.alexandrite_door": "Alexandrite Door",
+  "block.tutorialmod.alexandrite_trapdoor": "Alexandrite Trapdoor",
+
+  "block.tutorialmod.alexandrite_lamp": "Alexandrite Lamp",
+
+  "block.tutorialmod.kohlrabi_crop": "Kohlrabi Crop",
+  "block.tutorialmod.honey_berry_bush": "Honey Berry Bush",
+
+  "effect.tutorialmod.slimey": "Slimey",
+
+  "painting.tutorialmod.world.title": "World",
+  "painting.tutorialmod.world.author": "NanoAttack",
+  "painting.tutorialmod.shrimp.title": "Shrimp",
+  "painting.tutorialmod.shrimp.author": "NanoAttack",
+  "painting.tutorialmod.saw_them.title": "Saw Them",
+  "painting.tutorialmod.saw_them.author": "NanoAttack",
+
+
+  "enchantment.tutorialmod.lightning_striker": "Lightning Striker",
+
+  "creativetab.tutorialmod.alexandrite_items": "Alexandrite Items",
+  "creativetab.tutorialmod.alexandrite_blocks": "Alexandrite Blocks",
+
+  "tooltip.tutorialmod.magic_block.tooltip": "This Block is quite §9MAGICAL§r",
+
+  "tooltip.tutorialmod.chisel.shift_down": "This Item changes certain Blocks",
+  "tooltip.tutorialmod.chisel": "Press §eShift§r for more Information!",
+
+  "tooltip.tutorialmod.kohlrabi": "This tastes GREAT!",
+
+  "trim_pattern.tutorialmod.kaupen": "Kaupen Armor Trim",
+  "trim_material.tutorialmod.alexandrite": "Alexandrite Material",
+
+  "entity.tutorialmod.dino": "Dino"
+}

@@ -17,17 +17,18 @@ public  class DinoRenderer extends MobRenderer<DinoEntity, DinoModel<DinoEntity>
 
     @Override
     public ResourceLocation getTextureLocation(DinoEntity pEntity) {
-        return ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID,  "textures/entity/dino/dino_gray.png");
+        return ResourceLocation.fromNamespaceAndPath(TutorialMod.MOD_ID,  "textures/entity/dino/dino_grey.png");
     }
 
     @Override
     public void render(DinoEntity pEntity, float pEntityYaw, float pPartialTicks, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
 
-        if(pEntity.isBaby()){
+        if (pEntity.isBaby()) {
             pPoseStack.scale(0.5f, 0.5f, 0.5f);
         } else {
             pPoseStack.scale(1f, 1f, 1f);
 
-        super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
-    }
-}
+            super.render(pEntity, pEntityYaw, pPartialTicks, pPoseStack, pBuffer, pPackedLight);
+        }
+    } }
+
