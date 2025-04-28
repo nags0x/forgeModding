@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.nags.tutorialmod.entity.ModEntities;
 import org.jetbrains.annotations.Nullable;
+
 
 public class DinoEntity extends Animal{
     private int roarCooldown = 200; //10 seconds if 20 ticks = 1 sec
@@ -39,10 +39,54 @@ public class DinoEntity extends Animal{
         }
     }
 
+    @Override
+    public void travel(Vec3 travelVector) {
+        if (this.isAlive()) {
+            LivingEntity rider = this.getControllingPassenger();
+            if (this.isVehicle() && this.getControllingPassenger() instanceof Player player) {
+                this.setRot(player.getYRot(), player.getXRot());
+                this.yRotO = this.getYRot();
+                this.xRotO = this.getXRot();
+                this.setYHeadRot(this.getYRot());
+                this.yBodyRot = this.getYRot();
 
-    public boolean canBeControlledByRider() {
-        return this.isTamed && this.getControllingPassenger() instanceof Player player && player == this.tamer;
+                float forward = player.zza; // W/S input
+                float strafe = player.xxa;  // A/D input
+
+                if (this.onGround()) {
+                    this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 1.5F);
+
+                    Vec3 movement = new Vec3(strafe, travelVector.y, forward);
+                    this.moveRelative(0.1F, movement); // Magic method that applies strafing and forward motion
+                    this.move(MoverType.SELF, this.getDeltaMovement()); // Actually move the Dino
+                } else {
+                    super.travel(new Vec3(0, travelVector.y, 0)); // In air: fall naturally
+                }
+            } else {
+                super.travel(travelVector);
+            }
+        }
     }
+
+
+    @Override
+    public boolean isControlledByLocalInstance() {
+        // Only allow control if tamed and has a player rider
+        return this.isTamed && this.getControllingPassenger() instanceof Player;
+    }
+
+    @Override
+    public boolean isVehicle() {
+        // More reliable vehicle check that works with your taming system
+        return super.isVehicle() && this.isTamed;
+    }
+
+    @Override
+    @Nullable
+    public LivingEntity getControllingPassenger() {
+        return this.getPassengers().isEmpty() ? null : (this.getPassengers().get(0) instanceof LivingEntity living ? living : null);
+    }
+
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -50,7 +94,7 @@ public class DinoEntity extends Animal{
             if (!this.isTamed) {
                 tame(player);
                 return InteractionResult.SUCCESS;
-            } else if (this.tamer == player) {
+            } else if (this.tamer != null && this.tamer == player) {
                 if (this.isVehicle()) {
                     if (player.isShiftKeyDown()) {
                         this.ejectPassengers(); // Dismount
@@ -67,14 +111,13 @@ public class DinoEntity extends Animal{
 
 
 
-
     @Override
-    public boolean hurt(DamageSource source, float amount){
+    public boolean hurt(DamageSource source, float amount) {
         if (!this.level().isClientSide && roarCooldown <= 0) {
             roarCooldown = 200;
             this.level().playSound(null, this.blockPosition(), SoundEvents.ENDER_DRAGON_GROWL, this.getSoundSource(), 1.0F, 1.0F);
             this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(10)).forEach(player -> {
-                if (player != this.tamer) {
+                if (this.tamer == null || player != this.tamer) {
                     player.addEffect(new net.minecraft.world.effect.MobEffectInstance(
                             net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN, 100, 2));
                 }
@@ -141,8 +184,7 @@ public class DinoEntity extends Animal{
     }
 
     @Override
-    //make sure that dino kick's the hell out of the user
-    public void tick(){
+    public void tick() {
         super.tick();
         setupAnimationStates(); // Enable idle animation
 
@@ -153,25 +195,10 @@ public class DinoEntity extends Animal{
             }
         }
 
-        // Riding control logic
-        if (this.isTamed && this.isVehicle() && this.canBeControlledByRider()) {
-            Entity passenger = this.getControllingPassenger();
-            if (passenger instanceof Player player) {
-                double forwardMovement = player.zza * 0.5;
-                double strafeMovement = player.xxa * 0.5;
-
-                this.moveRelative(0.1f, new Vec3(strafeMovement, 0, forwardMovement));
-
-                this.setYRot(player.getYRot());
-                this.yHeadRot = player.getYRot();
-                this.yBodyRot = player.getYRot();
-            }
-        }
-
         // Knockback (exclude tamer and rider)
         if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F) {
             this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(4)).forEach(player -> {
-                if (player != this.tamer && !this.hasPassenger(player)) {
+                if (this.tamer == null || (player != this.tamer && !this.hasPassenger(player))) {
                     double knockbackStrength = 1.5;
                     Vec3 delta = player.position().subtract(this.position()).normalize();
                     player.push(delta.x * knockbackStrength, 0.5, delta.z * knockbackStrength);
@@ -188,15 +215,11 @@ public class DinoEntity extends Animal{
 
         // Particle effects for enraged state
         if (this.isEnraged && revengeTarget != null && revengeTarget.isAlive()) {
-            if (this.level().isClientSide && this.random.nextInt(5) == 0) {
+            if (this.level().isClientSide && this.random.nextInt(10) == 0) {
                 double particleX = this.getX() + (this.random.nextDouble() - 0.5) * this.getBbWidth();
                 double particleY = this.getY() + this.getBbHeight() * 0.5 + (this.random.nextDouble() - 0.5) * 0.5;
                 double particleZ = this.getZ() + (this.random.nextDouble() - 0.5) * this.getBbWidth();
-                this.level().addParticle(ParticleTypes.DRAGON_BREATH, particleX, particleY, particleZ, 0.0, 0.05, 0.0);
-                this.level().addParticle(ParticleTypes.SWEEP_ATTACK, particleX, particleY, particleZ, 0.0, 0.05, 0.0);
-                this.level().addParticle(ParticleTypes.DRAGON_BREATH, particleX, particleY, particleZ, 0.0, 0.05, 0.0);
-
-
+                this.level().addParticle(ParticleTypes.FLAME, particleX, particleY, particleZ, 0.0, 0.05, 0.0);
             }
         } else {
             this.isEnraged = false;
@@ -208,7 +231,6 @@ public class DinoEntity extends Animal{
             this.setTarget(revengeTarget);
         }
     }
-
 
     //sounds not moans :)
     @Override
