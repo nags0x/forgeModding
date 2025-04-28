@@ -1,5 +1,6 @@
 package net.nags.tutorialmod.entity.custom;
 
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -7,6 +8,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -20,6 +23,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class DinoEntity extends Animal{
 
+    private LivingEntity revengeTarget;
+    //store the user who kicked dino's ass
+    @Override
+    public boolean hurt(DamageSource source, float amount){
+        boolean result = super.hurt(source, amount);
+        if(source.getEntity() instanceof LivingEntity attacker){
+            this.revengeTarget = attacker;
+        }
+        return result;
+    }
+
     public final AnimationState idleAnimationState = new AnimationState();
     private int idleAnimationTimeout = 0;
 
@@ -30,7 +44,8 @@ public class DinoEntity extends Animal{
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-
+        //add code for attacking
+        this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.5, true));
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));
@@ -43,8 +58,10 @@ public class DinoEntity extends Animal{
         return Animal.createLivingAttributes()
                 .add(Attributes.MAX_HEALTH, 300)
                 .add(Attributes.MOVEMENT_SPEED, 0.350)
-                .add(Attributes.FOLLOW_RANGE, 24D);
+                .add(Attributes.FOLLOW_RANGE, 24D)
+                .add(Attributes.ATTACK_DAMAGE, 8.0);
     }
+
 
     @Override
     public boolean isFood(ItemStack pStack) {
@@ -67,10 +84,13 @@ public class DinoEntity extends Animal{
     }
 
     @Override
+    //make sure that dino kick's the hell out of the user
     public void tick(){
         super.tick();
-        if(this.level().isClientSide()){
-            this.setupAnimationStates();
+        if(revengeTarget != null && revengeTarget.isAlive()){
+            this.setTarget(revengeTarget);
+        } else {
+            revengeTarget = null;
         }
     }
 
