@@ -19,6 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.nags.tutorialmod.entity.ModEntities;
 import net.nags.tutorialmod.entity.client.DinoRenderer;
 import org.slf4j.Logger;
+import net.nags.tutorialmod.item.ModItems;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(TutorialMod.MOD_ID)
