@@ -24,8 +24,9 @@ import org.jetbrains.annotations.Nullable;
 
 public class DinoEntity extends Animal{
     private int roarCooldown = 200; //10 seconds if 20 ticks = 1 sec
-    private LivingEntity revengeTarget;
-    //store the user who kicked dino's ass
+    private boolean isEnraged = false; // Track if the Dino is enraged (hit)
+    private LivingEntity revengeTarget; // Store the attacker (player who hit the Dino)
+
     @Override
     public boolean hurt(DamageSource source, float amount){
         // Handle Roar Stun every 10 seconds
@@ -42,16 +43,10 @@ public class DinoEntity extends Animal{
             }
         }
 
-        // Spawn fire and smoke particles when the Dino is hit
-        if (this.level().isClientSide) { // Client-side logic
-            // Particle position: Slightly above Dino's body (use a fraction of height)
-            double particleX = this.getX();
-            double particleY = this.getY() + this.getBbHeight() / 2.0;
-            double particleZ = this.getZ(); 
-
-            // Spawn flame and smoke particles
-            this.level().addParticle(ParticleTypes.FLAME, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
-            this.level().addParticle(ParticleTypes.LARGE_SMOKE, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+        // Store the attacker as revengeTarget
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            this.revengeTarget = attacker;
+            this.isEnraged = true; // Dino becomes enraged after being hit
         }
 
         boolean result = super.hurt(source, amount);
@@ -123,19 +118,42 @@ public class DinoEntity extends Animal{
             });
         }
 
+        // If the Dino is enraged, increase speed
+        if (this.isEnraged) {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.600);  // Increase speed when enraged
+        } else {
+            this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.350);  // Default speed
+        }
 
+        // If the revenge target (attacker) is alive, keep showing particles
+        if (revengeTarget != null && revengeTarget.isAlive()) {
+            if (this.level().isClientSide) {
+                double particleX = this.getX();
+                double particleY = this.getY() + this.getBbHeight() / 2.0;
+                double particleZ = this.getZ();
+
+                // Spawn flame and smoke particles around Dino's body (red, to simulate rage)
+                this.level().addParticle(ParticleTypes.SWEEP_ATTACK, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+                this.level().addParticle(ParticleTypes.DRAGON_BREATH, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+                this.level().addParticle(ParticleTypes.DRAGON_BREATH, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+            }
+        } else {
+            // If revenge target is dead, stop particles and reset enraged state
+            this.isEnraged = false;
+        }
 
         super.tick();
-        if(revengeTarget != null && revengeTarget.isAlive()){
+
+        // Set the Dino's target to the revenge target (if alive)
+        if (revengeTarget != null && revengeTarget.isAlive()) {
             this.setTarget(revengeTarget);
         } else {
             revengeTarget = null;
         }
     }
 
+
     //sounds not moans :)
-
-
     @Override
     protected @Nullable SoundEvent getAmbientSound() {
         return SoundEvents.ELDER_GUARDIAN_CURSE;
