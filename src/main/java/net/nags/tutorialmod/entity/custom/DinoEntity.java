@@ -1,6 +1,7 @@
 package net.nags.tutorialmod.entity.custom;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -22,11 +23,37 @@ import net.nags.tutorialmod.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
 public class DinoEntity extends Animal{
-
+    private int roarCooldown = 200; //10 seconds if 20 ticks = 1 sec
     private LivingEntity revengeTarget;
     //store the user who kicked dino's ass
     @Override
     public boolean hurt(DamageSource source, float amount){
+        // Handle Roar Stun every 10 seconds
+        if (!this.level().isClientSide) {
+            roarCooldown--;
+            if (roarCooldown <= 0) {
+                roarCooldown = 200; // reset cooldown
+
+                this.level().playSound(null, this.blockPosition(), SoundEvents.ENDER_DRAGON_GROWL, this.getSoundSource(), 5.0F, 1.0F);
+
+                this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(10)).forEach(player -> {
+                    player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.MOVEMENT_SLOWDOWN, 100, 2)); // 5 seconds slow
+                });
+            }
+        }
+
+        // Spawn fire and smoke particles when the Dino is hit
+        if (this.level().isClientSide) { // Client-side logic
+            // Particle position: Slightly above Dino's body (use a fraction of height)
+            double particleX = this.getX();
+            double particleY = this.getY() + this.getBbHeight() / 2.0;
+            double particleZ = this.getZ(); 
+
+            // Spawn flame and smoke particles
+            this.level().addParticle(ParticleTypes.FLAME, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+            this.level().addParticle(ParticleTypes.LARGE_SMOKE, particleX, particleY, particleZ, 0.0, 0.0, 0.0);
+        }
+
         boolean result = super.hurt(source, amount);
         if(source.getEntity() instanceof LivingEntity attacker){
             this.revengeTarget = attacker;
@@ -86,6 +113,18 @@ public class DinoEntity extends Animal{
     @Override
     //make sure that dino kick's the hell out of the user
     public void tick(){
+        //knockback
+        if (!this.level().isClientSide && this.getTarget() != null && this.distanceTo(this.getTarget()) < 4.0F) {
+            this.level().getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(4)).forEach(player -> {
+                double knockbackStrength = 1.5D;
+                double dx = player.getX() - this.getX();
+                double dz = player.getZ() - this.getZ();
+                player.push(dx * knockbackStrength, 0.5D, dz * knockbackStrength);
+            });
+        }
+
+
+
         super.tick();
         if(revengeTarget != null && revengeTarget.isAlive()){
             this.setTarget(revengeTarget);
