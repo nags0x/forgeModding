@@ -1,46 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Big Ass Dino 🦖</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white font-sans">
 
-Source installation information for modders
--------------------------------------------
-This code follows the Minecraft Forge installation methodology. It will apply
-some small patches to the vanilla MCP source code, giving you and it access 
-to some of the data and functions you need to build a successful mod.
+  <header class="text-center py-10 bg-gray-800 shadow-md">
+    <h1 class="text-4xl font-bold">🦖 Big Ass Dino</h1>
+    <p class="text-xl mt-2">Minecraft just went Jurassic. 🌋</p>
+  </header>
 
-Note also that the patches are built against "un-renamed" MCP source code (aka
-SRG Names) - this means that you will not be able to read them directly against
-normal code.
+  <main class="max-w-4xl mx-auto p-6">
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-2">🚀 Project Overview</h2>
+      <p>This project brings massive, raging dinos into Minecraft (Java Edition) using a custom mod. These beasts roam the world — roaring, sprinting, and turning players into toast.</p>
+    </section>
 
-Setup Process:
-==============================
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-2">✅ Features</h2>
+      <ul class="list-disc list-inside space-y-1">
+        <li>Randomized dino spawning across the world 🌍</li>
+        <li>Custom sound effects (thanks, Ender Dragon) 🔥</li>
+        <li>High-speed dino movement — blink and you miss it 🏃‍♂️💨</li>
+        <li>Fully integrated into Minecraft's prefab and entity system</li>
+        <li>Automatically targets and follows players relentlessly</li>
+        <li>Knocks back players with rage-powered kicks 🦵</li>
+        <li>Roars every 10s to slow nearby players (debuff effect)</li>
+        <li>Gets enraged on damage — particles + speed boost 💢</li>
+        <li>Attributes (health, damage, speed) fully set</li>
+        <li>Idle animation state ready (GeckoLib)</li>
+      </ul>
+    </section>
 
-Step 1: Open your command-line and browse to the folder where you extracted the zip file.
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-2">🎮 Gameplay Vibes</h2>
+      <p>
+        This dino screams like it rage-quit the End dimension, chases players like a heat-seeking missile, and kicks like a freight train.
+        Catching it? Nearly impossible. Riding it? Someday. Fighting it? Good luck, brave soul.
+      </p>
+    </section>
 
-Step 2: You're left with a choice.
-If you prefer to use Eclipse:
-1. Run the following command: `./gradlew genEclipseRuns`
-2. Open Eclipse, Import > Existing Gradle Project > Select Folder 
-   or run `gradlew eclipse` to generate the project.
+    <section class="mb-8">
+      <h2 class="text-2xl font-semibold mb-2">📦 TL;DR</h2>
+      <p>Dino exists. It’s loud. It’s fast. It’s beautiful. Welcome to chaos — welcome to <strong>Big Ass Dino</strong>.</p>
+    </section>
 
-If you prefer to use IntelliJ:
-1. Open IDEA, and import project.
-2. Select your build.gradle file and have it import.
-3. Run the following command: `./gradlew genIntellijRuns`
-4. Refresh the Gradle Project in IDEA if required.
-
-If at any point you are missing libraries in your IDE, or you've run into problems you can 
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-(this does not affect your code) and then start the process again.
-
-Mapping Names:
-=============================
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license, if you do not agree with it you can change your mapping names to other crowdsourced names in your 
-build.gradle. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/MinecraftForge/MCPConfig/blob/master/Mojang.md
-
-Additional Resources: 
-=========================
-Community Documentation: https://docs.minecraftforge.net/en/latest/gettingstarted/
-LexManos' Install Video: https://youtu.be/8VEdtQLuLO0
-Forge Forums: https://forums.minecraftforge.net/
-Forge Discord: https://discord.minecraftforge.net/
+    <footer class="text-center text-sm text-gray-400 mt-12 border-t border-gray-700 pt-6">
+      Made with ❤️ during a sleep-deprived modding spree. <br />
+      <a href="https://github.com/yourusername/big-ass-dino" class="text-blue-400 hover:underline">View on GitHub</a>
+    </footer>
+  </main>
+</body>
+</html>
